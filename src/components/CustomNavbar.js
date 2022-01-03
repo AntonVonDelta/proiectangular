@@ -28,6 +28,7 @@ class CustomNavbar extends Component{
                         <Nav>
                             <span className="nav-link">Logged in as <a href="/profile">{this.props.name}</a></span>
                         </Nav>
+                        <Nav.Link href="/logout">Logout</Nav.Link>
                     </Container>
                 </Navbar>
             )

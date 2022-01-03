@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link } from 'react-router-dom';
+import { loginUser } from "../../actions/tools";
 
 class Login extends Component{
     constructor(props){
@@ -15,18 +16,9 @@ class Login extends Component{
     async checkUser(event){
         event.preventDefault();
 
-        try{
-            const response = await axios.post("https://reqres.in/api/login",
-            {
-                email:this.state.username,
-                password: this.state.password
-            });
-
-            alert(JSON.stringify(response));
-            this.props.setUser({username:this.state.username,password:this.state.password,authentificated:true});
-
+        if(loginUser(this.state)){
             window.location.replace("/");
-        }catch(ex){
+        }else{
             alert("User does not exist");
         }
     }

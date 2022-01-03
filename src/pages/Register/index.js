@@ -4,50 +4,44 @@ import { Link } from 'react-router-dom';
 
 
 class Register extends Component {
-  history;
   constructor() {
     super();
     this.state = {
-      name: "",
-      email: "",
-      password: "",
-      confirm_password: "",
-      users: []
+      username: "",
+      password: ""
     };
-    Axios.defaults.baseURL = "https://salty-sands-74195.herokuapp.com/";
+
+    this.register=this.register.bind(this);
+
   }
 
-  componentDidMount() {
-    //dispatch = useDispatch();
-  }
   register() {
-    const newUser = {
-      name: this.state.name,
-      email: this.state.email,
-      passwords: {
-        password: this.state.password,
-        confirm_password: this.state.confirm_password
+    Axios.post("https://reqres.in/api/register", {
+      email:this.state.username,
+      password:this.state.password
+    })
+    .then(response => {
+      console.log(response);
+      alert("Registered succesfully!");
+
+      var new_user={
+        username:this.state.username,
+        password:this.state.password,
+        authentificated:true
       }
-    };
-    this.registerUserReq(newUser);
-    this.setState({ users: [newUser, ...this.state.users] });
+      localStorage.setItem('user', JSON.stringify(new_user));
+      window.location.replace("/");
+    })
+    .catch(error => {
+      alert("Registration failed!")
+    });
   }
 
-  registerUserReq(user) {
-    Axios.post("user/register", user)
-      .then(response => {
-        window.location.replace("/login");
-        console.log(response);
-      })
-      .catch(error => {});
-  }
 
   render() {
-    let users = [];
-
     return (
       <div>
-        <h1>{this.props.title}</h1>
+        <h1>Register</h1>
         <div className="border p-4">
           {this.state.userInserted}
 
@@ -58,15 +52,7 @@ class Register extends Component {
             <input
               className="form-control"
               placeholder="Name .."
-              onChange={ev => this.setState({ name: ev.target.value })}
-            />
-          </div>
-          <div className="form-group">
-            <label>Email</label>
-            <input
-              className="form-control"
-              placeholder="Email .."
-              onChange={ev => this.setState({ email: ev.target.value })}
+              onChange={ev => this.setState({ username: ev.target.value })}
             />
           </div>
           <div className="form-group">
@@ -77,25 +63,10 @@ class Register extends Component {
               onChange={ev => this.setState({ password: ev.target.value })}
             />
           </div>
-          <div className="form-group">
-            <label>Password Again</label>
-            <input
-              className="form-control"
-              placeholder="Password .."
-              onChange={ev =>
-                this.setState({ confirm_password: ev.target.value })
-              }
-            />
-          </div>
           <button className="btn btn-success" onClick={() => this.register()}>
             Register
           </button>
         </div>
-        <ul>
-          {users.map(item => {
-            return <li key={item.email}>{item.name}</li>;
-          })}
-        </ul>
       </div>
     );
   }

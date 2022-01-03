@@ -1,25 +1,23 @@
 import ReactDOM from 'react-dom';
-import { Profiler, useState } from "react";
+import { Profiler, useState,useEffect } from "react";
 import { BrowserRouter, Route, Switch, Link, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 // Components
 import "./index.css"
+import { loadUser } from './actions/tools';
+
 import CustomNavbar from "./components/CustomNavbar"
 import Person from "./Person"
 import Home from "./pages/Home"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
+import Logout from "./pages/Logout"
 import Profile from "./pages/Profile"
 import Footer from "./components/Footer"
 
 const App = () => {
-    const name = "Person's name";
-    const [user, setUser] = useState({
-        username: "",
-        password: "",
-        authentificated:false
-    });
+    var user=loadUser();
 
     return (
         <div>
@@ -31,18 +29,23 @@ const App = () => {
                 <div className="container">
                     <Switch>
                         <Route exact path="/" render={() => {
+                            console.log("a");
                             return (
                                     !user.authentificated ?
-                                        <Login setUser={setUser}/> :
+                                        <Login/> :
                                         <Home />
                                 );
                             }}>
+                        </Route>
+                        
+                        <Route path="/logout">
+                            <Logout/>
                         </Route>
 
                         <Route path="/login" render={() => {
                             return (
                                 !user.authentificated ?
-                                    <Login setUser={setUser}/> :
+                                    <Login/> :
                                     <Redirect to="/"></Redirect>
                             );
                         }}>
@@ -58,6 +61,7 @@ const App = () => {
                         </Route>
 
                         <Route path="/profile" render={() => {
+                            console.log("b "+user.authentificated);
                             return (
                                 !user.authentificated ?
                                     <Redirect to="/"></Redirect> :
