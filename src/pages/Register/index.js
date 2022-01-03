@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import Axios from "axios";
-import { useHistory } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 
 class Register extends Component {
