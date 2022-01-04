@@ -1,42 +1,25 @@
 import Axios from "axios";
+import { AXIOS_TOKEN_CONFIG } from "../secret";
 
-
-export const registerUser = () => async () => {
-    Axios.post("https://reqres.in/api/register", {
-        email:this.state.username,
-        password:this.state.password
-      })
-      .then(response => {
-        console.log(response);
-        alert("Registered succesfully!");
-  
-        var new_user={
-          username:this.state.username,
-          password:this.state.password,
-          authentificated:true
-        }
-        localStorage.setItem('user', JSON.stringify(new_user));
-
-        return true;
-      })
-      .catch(error => {
-        alert("Registration failed!")
-      });
-
-      return false;
-};
-
-export const loginUser =async (user)  => {
+export const registerUser = async (user) => {
     try{
-        const response = await Axios.post("https://reqres.in/api/login",
-        {
-            email:user.username,
-            password: user.password
-        });
-
+        const response = await Axios.post("https://gorest.co.in/public/v1/users", {
+            email: user.email,
+            name: user.username,
+            gender:"male",
+            status:"active",
+            password:user.password
+        },AXIOS_TOKEN_CONFIG);
+        
         console.log(response);
+        
+        
+        if(response.data.data.id==null){
+            return false;
+        }
 
         var new_user={
+            email:user.email,
             username:user.username,
             password:user.password,
             authentificated:true
@@ -45,13 +28,50 @@ export const loginUser =async (user)  => {
 
         return true;
     }catch(ex){
+        console.log(ex);
+    }
+    
+    return false;
+};
+
+export const loginUser =async (user)  => {
+    try{
+        const response = await Axios.get("https://gorest.co.in/public/v1/users?email="+user.email,AXIOS_TOKEN_CONFIG);
+        const ALL_USERS_PASSWORD="password";
+
+        console.log(response);
+
+        var found_user=null;
+        for(var entry of response.data.data){
+            if(entry.email==user.email){
+                found_user=entry;
+            }
+        }
+
+        if(found_user==null) return false;
+        
+        // THIS WILL BE REPLACED IN THE FUTURE WITH A PROPER API WHICH ALSO STORES PASSWORDS
+        if(user.password!=ALL_USERS_PASSWORD) return false;
+
+        var new_user={
+            email:entry.email,
+            username:entry.name,
+            password:ALL_USERS_PASSWORD,
+            authentificated:true
+        }
+        localStorage.setItem('user', JSON.stringify(new_user));
+
+        return true;
+    }catch(ex){
+        console.log(ex);
     }
 
     return false;
 };
 
-export const loadUser = () => async () =>{
+export const loadUser = ()  =>{
     var user = {
+        email:"",
         username: "",
         password: "",
         authentificated:false

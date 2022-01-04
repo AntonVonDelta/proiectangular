@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import Axios from "axios";
 import { Link } from 'react-router-dom';
+import { registerUser } from "../../actions/tools";
 
 
 class Register extends Component {
   constructor() {
     super();
     this.state = {
+      email:"",
       username: "",
       password: ""
     };
@@ -15,26 +17,13 @@ class Register extends Component {
 
   }
 
-  register() {
-    Axios.post("https://reqres.in/api/register", {
-      email:this.state.username,
-      password:this.state.password
-    })
-    .then(response => {
-      console.log(response);
+  async register() {
+    if(await registerUser(this.state)){
       alert("Registered succesfully!");
-
-      var new_user={
-        username:this.state.username,
-        password:this.state.password,
-        authentificated:true
-      }
-      localStorage.setItem('user', JSON.stringify(new_user));
       window.location.replace("/");
-    })
-    .catch(error => {
+    }else{
       alert("Registration failed!")
-    });
+    }
   }
 
 
@@ -43,8 +32,6 @@ class Register extends Component {
       <div>
         <h1>Register</h1>
         <div className="border p-4">
-          {this.state.userInserted}
-
           <div className="form-group">
             <label>
               Name <small>{this.state.name}</small>
@@ -56,9 +43,20 @@ class Register extends Component {
             />
           </div>
           <div className="form-group">
+            <label>
+              Email <small>{this.state.email}</small>
+            </label>
+            <input
+              className="form-control"
+              placeholder="Email .."
+              onChange={ev => this.setState({ email: ev.target.value })}
+            />
+          </div>
+          <div className="form-group">
             <label>Password</label>
             <input
               className="form-control"
+              type="password"
               placeholder="Password .."
               onChange={ev => this.setState({ password: ev.target.value })}
             />

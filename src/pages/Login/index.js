@@ -7,7 +7,7 @@ class Login extends Component{
     constructor(props){
         super(props);
         this.state={
-            username:"",
+            email:"",
             password:""
         }
 
@@ -16,7 +16,7 @@ class Login extends Component{
     async checkUser(event){
         event.preventDefault();
 
-        if(loginUser(this.state)){
+        if(await loginUser(this.state)){
             window.location.replace("/");
         }else{
             alert("User does not exist");
@@ -27,13 +27,13 @@ class Login extends Component{
         return (
             <form class="form-signin"  onSubmit={this.checkUser}>
                 <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                <label for="inputEmail" class="sr-only">Username</label>
+                <label for="inputEmail" class="sr-only">Email</label>
                 <input
                 className="form-control"
                 type="text"
                 value={this.state.username}
                 placeholder="enter a username"
-                onChange={({ target }) =>this.setState({username:target.value})}
+                onChange={({ target }) =>this.setState({email:target.value})}
               />
                 <label for="inputPassword" class="sr-only">Password</label>
                 <input

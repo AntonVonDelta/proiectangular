@@ -18,6 +18,7 @@ import Footer from "./components/Footer"
 
 const App = () => {
     var user=loadUser();
+    console.log(user);
 
     return (
         <div>
@@ -29,7 +30,6 @@ const App = () => {
                 <div className="container">
                     <Switch>
                         <Route exact path="/" render={() => {
-                            console.log("a");
                             return (
                                     !user.authentificated ?
                                         <Login/> :
@@ -61,7 +61,6 @@ const App = () => {
                         </Route>
 
                         <Route path="/profile" render={() => {
-                            console.log("b "+user.authentificated);
                             return (
                                 !user.authentificated ?
                                     <Redirect to="/"></Redirect> :

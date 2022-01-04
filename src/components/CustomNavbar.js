@@ -10,7 +10,9 @@ class CustomNavbar extends Component{
             return (  
                 <Navbar bg="light" expand="lg">
                     <Container>
-                    <h5 class="my-0 mr-md-auto font-weight-normal">PublicComments</h5>
+                        <h5 class="my-0 mr-md-auto font-weight-normal">
+                            <Nav.Link href="/">PublicComments</Nav.Link>
+                        </h5>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Nav>
                             <Nav.Link href="/login">Login</Nav.Link>
@@ -23,7 +25,9 @@ class CustomNavbar extends Component{
             return ( 
             <Navbar bg="light" expand="lg">
                     <Container>
-                    <h5 class="my-0 mr-md-auto font-weight-normal">PublicComments</h5>
+                        <h5 class="my-0 mr-md-auto font-weight-normal">
+                            <Nav.Link href="/">PublicComments</Nav.Link>
+                        </h5>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />
                         <Nav>
                             <span className="nav-link">Logged in as <a href="/profile">{this.props.name}</a></span>
