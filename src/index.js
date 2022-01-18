@@ -18,7 +18,7 @@ import Footer from "./components/Footer"
 
 const App = () => {
     var user=loadUser();
-    console.log(user);
+    console.log("logged in user:",user);
 
     return (
         <div>

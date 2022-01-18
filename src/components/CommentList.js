@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
+import Comment from "./Comment";
 
 class CommentList extends Component{
     comments;
@@ -15,9 +16,18 @@ class CommentList extends Component{
         this.onAddComment=this.props.onAddComment;
     }
 
+    handleDelete(comment){
+        if(this.onDeleteComment){
+            this.onDeleteComment(comment);
+        }
+    }
     render() {
         return <div>
-            {comments.map}
+            {comments.map((comment,i)=>{
+                return (
+                    <Comment onDelete={handleDelete} comment={comment}/>
+                )
+            })}
         </div>
     }
 }

@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 
 class Comment extends Component{
     render() {
-        return <h1>Home page</h1>
+        return <div>Comment numero 1</div>
     }
 }
 

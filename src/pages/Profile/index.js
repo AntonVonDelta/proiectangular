@@ -23,8 +23,12 @@ class Profile extends Component{
                         <td>{user.email}</td>
                     </tr>
                     <tr>
+                        <td>Sex</td>
+                        <td>{user.sex}</td>
+                    </tr>
+                    <tr>
                         <td>Password</td>
-                        <td>{user.password>8?"Strong":"Weak"}</td>
+                        <td>{user.strong_password?"Strong":"Weak"}</td>
                     </tr>
                 </table>
             </div>
