@@ -1,6 +1,22 @@
 import Axios from "axios";
 import { AXIOS_TOKEN_CONFIG } from "../secret";
 
+export const loadUser = () => async () =>{
+    var user = {
+        username: "",
+        password: "",
+        authentificated:false
+    };
+
+    const loggedInUser = localStorage.getItem("user");
+    console.log("Stored user data:",loggedInUser);
+
+    if (loggedInUser) {
+        user = JSON.parse(loggedInUser);
+    }
+
+    return user;
+} 
 
 export const getComments =async (user)  => {
     try{

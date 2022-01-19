@@ -3,10 +3,10 @@ import { AXIOS_TOKEN_CONFIG } from "../secret";
 import { createSlice } from "@reduxjs/toolkit";
 
 // Get the user's password and process it 
-const getDBUserPassowrd=(user)=>{
+const getDBUserPassowrd = (user) => {
     // const ALL_USERS_PASSWORD="password";
     // return ALL_USERS_PASSWORD;
-    return user.name+"!";
+    return user.name + "!";
 }
 
 //reducer
@@ -47,60 +47,59 @@ export const doRegister = (user) => async (dispatch) => {
         const response = await Axios.post("https://gorest.co.in/public/v1/users", {
             email: user.email,
             name: user.username,
-            gender:"male",
-            status:"active",
-            password:user.password
-        },AXIOS_TOKEN_CONFIG);
-        
+            gender: "male",
+            status: "active",
+            password: user.password
+        }, AXIOS_TOKEN_CONFIG);
+
         console.log(response);
         if (response.status != 200) {
             return;
         }
-        
-        if(response.data.data.id==null){
-            return false;
+
+        if (response.data.data.id == null) {
+            return;
         }
 
-        var new_user={
-            email:user.email,
-            username:user.username,
-            sex:user.sex,
-            strong_password:(user.password.length>8)
+        var new_user = {
+            email: user.email,
+            username: user.username,
+            sex: user.sex,
+            strong_password: (user.password.length > 8)
         }
         dispatch(setRegisterData(new_user));
         dispatch(setLoggedIn(true));
-
     } catch (e) { }
 };
 
 export const doLogin = (user) => async (dispatch) => {
     try {
-        const response = await Axios.get("https://gorest.co.in/public/v1/users?email="+user.email,AXIOS_TOKEN_CONFIG);
+        const response = await Axios.get("https://gorest.co.in/public/v1/users?email=" + user.email, AXIOS_TOKEN_CONFIG);
         console.log(response);
 
-        if(response.status!=200){
+        if (response.status != 200) {
             dispatch(setLoginError(true));
             return;
         }
 
-        var found_user=null;
-        for(var entry of response.data.data){
-            if(entry.email==user.email){
-                found_user=entry;
+        var found_user = null;
+        for (var entry of response.data.data) {
+            if (entry.email == user.email) {
+                found_user = entry;
             }
         }
 
-        if(found_user==null) return false;
-        
-        // THIS WILL BE REPLACED IN THE FUTURE WITH A PROPER API WHICH ALSO STORES PASSWORDS
-        if(user.password!=getDBUserPassowrd(found_user)) return false;
+        if (found_user == null) return false;
 
-        var new_user={
-            email:found_user.email,
-            username:found_user.name,
-            sex:found_user.gender,
-            strong_password:(user.password.length>8),
-            authentificated:true
+        // THIS WILL BE REPLACED IN THE FUTURE WITH A PROPER API WHICH ALSO STORES PASSWORDS
+        if (user.password != getDBUserPassowrd(found_user)) return false;
+
+        var new_user = {
+            email: found_user.email,
+            username: found_user.name,
+            sex: found_user.gender,
+            strong_password: (user.password.length > 8),
+            authentificated: true
         }
         localStorage.setItem('user', JSON.stringify(new_user));
         dispatch(setLoggedIn(true));
@@ -118,4 +117,4 @@ export const reqRegisterData = (state) => state.user.registerData;
 export const reqLoginError = (state) => state.user.loginError;
 export const reqLoggedIn = (state) => state.user.isLoggedIn;
 
-export default userSlice.reducer;
+// export default userSlice.reducer;
