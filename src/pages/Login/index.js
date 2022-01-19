@@ -14,8 +14,7 @@ function Login() {
 
     const userLoginError = useSelector((state) => state.user.loginError);
     const userIsLoggedIn = useSelector((state) => state.user.isLoggedIn);
-    let history = useHistory();
-    let navigate = useNavigate();
+
 
     async function checkUser(event) {
         event.preventDefault();
@@ -32,11 +31,10 @@ function Login() {
 
         if (userIsLoggedIn) {
             console.log("Redirect ...");
-            // history.push("/");
-            navigate("/");
+            window.location.href="/home";
         }
     }, [userLoginError, userIsLoggedIn]);
-
+    
     return (
         <form class="form-signin" onSubmit={checkUser}>
             {userLoginError && (

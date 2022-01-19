@@ -6,11 +6,6 @@ import { useHistory } from "react-router-dom";
 
 export const Profile = () => {
     var user = loadUser();
-    let history = useHistory();
-
-    if (!user==null) {
-        history.push("/");
-    }
 
     return (
         <div className="mt-5">

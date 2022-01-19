@@ -44,10 +44,14 @@ import Footer from "./components/Footer"
 // Trebuia sa stii ca numai ...."to" e permis!!!!   https://stackoverflow.com/questions/48856955/react-typeerror-location-is-undefined
 // Alta zi pierduta pe asta. Eroarea care aparea de fapt nu avea nicio legatura "locationProp is undefined"....noroc
 
+// useHistory pur si simplu nu merge. Uneori rezulta in loop infinit alteori nu face absolut niciun redirect daca parametrul e "/". 
+// Asa cum am mai zis hackul aici care este "window.location.href" merge mai bine decat implementarea default
+
+
 const store = configureStore(/* provide initial state if any */);
 
 const App = () => {
-    var user = loadUser();
+    var user =loadUser();
     console.log("logged in user:", user);
 
     return (
@@ -61,8 +65,8 @@ const App = () => {
                     <Route exact path="/" render={() => {
                         return (
                             user==null ?
-                                <Login /> :
-                                <Home />
+                                <Redirect to="/login"></Redirect>:
+                                <Redirect to="/home"></Redirect>
                         );
                     }}>
                     </Route>
@@ -74,7 +78,7 @@ const App = () => {
                     <Route path="/login" render={() => {
                         return (
                             user==null ?
-                                <Login /> :
+                                <Login/>:
                                 <Redirect to="/"></Redirect>
                         );
                     }}>
@@ -83,7 +87,7 @@ const App = () => {
                     <Route path="/register" render={() => {
                         return (
                             user==null ?
-                                <Register /> :
+                                <Register/>:
                                 <Redirect to="/"></Redirect>
                         );
                     }}>
@@ -93,7 +97,7 @@ const App = () => {
                         return (
                             user==null ?
                                 <Redirect to="/"></Redirect> :
-                                <Profile />
+                                <Profile/>
                         );
                     }}>
                     </Route>
