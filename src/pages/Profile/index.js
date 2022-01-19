@@ -8,7 +8,7 @@ export const Profile = () => {
     var user = loadUser();
     let history = useHistory();
 
-    if (!user.authentificated) {
+    if (!user==null) {
         history.push("/");
     }
 

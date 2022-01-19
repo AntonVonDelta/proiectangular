@@ -33,16 +33,11 @@ export const userSlice = createSlice({
     },
 });
 
-//actions
 
-export const {
-    setRegisterData,
-    clearRegisterData,
-    setLoginError,
-    setLoggedIn,
-} = userSlice.actions;
 
 export const doRegister = (user) => async (dispatch) => {
+    dispatch(setLoginError(false));
+
     try {
         const response = await Axios.post("https://gorest.co.in/public/v1/users", {
             email: user.email,
@@ -54,10 +49,12 @@ export const doRegister = (user) => async (dispatch) => {
 
         console.log(response);
         if (response.status != 200) {
+            dispatch(setLoginError(true));
             return;
         }
 
         if (response.data.data.id == null) {
+            dispatch(setLoginError(true));
             return;
         }
 
@@ -67,12 +64,18 @@ export const doRegister = (user) => async (dispatch) => {
             sex: user.sex,
             strong_password: (user.password.length > 8)
         }
+
+        localStorage.setItem('user', JSON.stringify(new_user));
         dispatch(setRegisterData(new_user));
         dispatch(setLoggedIn(true));
-    } catch (e) { }
+    } catch (e) { 
+        dispatch(setLoginError(true));
+    }
 };
 
 export const doLogin = (user) => async (dispatch) => {
+    dispatch(setLoginError(false));
+
     try {
         const response = await Axios.get("https://gorest.co.in/public/v1/users?email=" + user.email, AXIOS_TOKEN_CONFIG);
         console.log(response);
@@ -89,18 +92,24 @@ export const doLogin = (user) => async (dispatch) => {
             }
         }
 
-        if (found_user == null) return false;
+        if (found_user == null) {
+            dispatch(setLoginError(true));
+            return;
+        }
 
         // THIS WILL BE REPLACED IN THE FUTURE WITH A PROPER API WHICH ALSO STORES PASSWORDS
-        if (user.password != getDBUserPassowrd(found_user)) return false;
+        if (user.password != getDBUserPassowrd(found_user)) {
+            dispatch(setLoginError(true));
+            return;
+        }
 
         var new_user = {
             email: found_user.email,
             username: found_user.name,
             sex: found_user.gender,
-            strong_password: (user.password.length > 8),
-            authentificated: true
+            strong_password: (user.password.length > 8)
         }
+        console.log("doLogin:",new_user);
         localStorage.setItem('user', JSON.stringify(new_user));
         dispatch(setLoggedIn(true));
     } catch (e) {
@@ -108,5 +117,11 @@ export const doLogin = (user) => async (dispatch) => {
     }
 };
 
-
+//actions
+export const {
+    setRegisterData,
+    clearRegisterData,
+    setLoginError,
+    setLoggedIn,
+} = userSlice.actions;
 export default userSlice.reducer;

@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from 'react-router-dom';
-import doLogin from "./../../slices/userSlice";
+import {doLogin} from "./../../slices/userSlice";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory,useNavigate } from "react-router-dom";
 
 function Login() {
-    const [email, setEmail] = useState();
-    const [password, setPassword] = useState();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [loginError,setLoginError]=useState(false);
     const dispatch = useDispatch();
 
-    const userLoginError = useSelector((state) => state);
-    const userIsLoggedIn = useSelector((state) => state.isLoggedIn);
+    const userLoginError = useSelector((state) => state.user.loginError);
+    const userIsLoggedIn = useSelector((state) => state.user.isLoggedIn);
     let history = useHistory();
+    let navigate = useNavigate();
 
     async function checkUser(event) {
+        event.preventDefault();
+
         const user = {
             email: email,
             password: password
@@ -24,14 +27,14 @@ function Login() {
         dispatch(doLogin(user));
     }
 
-    console.log(userLoginError);
-
     useEffect(() => {
+        console.log("State: ",userIsLoggedIn,userLoginError);
+
         if (userIsLoggedIn) {
             console.log("Redirect ...");
-            history.push("/");
+            // history.push("/");
+            navigate("/");
         }
-        console.log("asdd",userLoginError);
     }, [userLoginError, userIsLoggedIn]);
 
     return (

@@ -5,7 +5,7 @@ import { ConnectedRouter } from "connected-react-router";
 import { BrowserRouter, Route, Switch, Link, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from "react-redux";
-import configureStore, { history } from "./configureStore.js";
+import configureStore from "./configureStore.js";
 
 // Components
 import "./index.css"
@@ -13,6 +13,7 @@ import { loadUser } from './actions/tools';
 import { doLogin, reqLoginError, reqLoggedIn } from "./slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import {rootReducer} from "./reducers"
 
 import CustomNavbar from "./components/CustomNavbar"
 import Home from "./pages/Home"
@@ -52,14 +53,14 @@ const App = () => {
     return (
         <div>
             <div>
-                <CustomNavbar authentificated={user.authentificated} name={user.username}></CustomNavbar>
+                <CustomNavbar authentificated={user!=null} name={user!=null?user.username:""}></CustomNavbar>
             </div>
 
             <div className="container">
                 <Switch>
                     <Route exact path="/" render={() => {
                         return (
-                            !user.authentificated ?
+                            user==null ?
                                 <Login /> :
                                 <Home />
                         );
@@ -72,7 +73,7 @@ const App = () => {
 
                     <Route path="/login" render={() => {
                         return (
-                            !user.authentificated ?
+                            user==null ?
                                 <Login /> :
                                 <Redirect to="/"></Redirect>
                         );
@@ -81,7 +82,7 @@ const App = () => {
 
                     <Route path="/register" render={() => {
                         return (
-                            !user.authentificated ?
+                            user==null ?
                                 <Register /> :
                                 <Redirect to="/"></Redirect>
                         );
@@ -90,7 +91,7 @@ const App = () => {
 
                     <Route path="/profile" render={() => {
                         return (
-                            !user.authentificated ?
+                            user==null ?
                                 <Redirect to="/"></Redirect> :
                                 <Profile />
                         );
@@ -109,12 +110,9 @@ const App = () => {
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            {/* <BrowserRouter>
+            <BrowserRouter>
                 <App />
-            </BrowserRouter>     */}
-            <ConnectedRouter history={history}>
-                <App />
-            </ConnectedRouter>  
+            </BrowserRouter>    
         </Provider>
     </React.StrictMode>,
     document.getElementById("root")
