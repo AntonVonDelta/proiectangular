@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import Axios from "axios";
 import { Link } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
+export const Logout =()=> {
+    let history = useHistory();
 
-class Logout extends Component {
-  render() {
     localStorage.removeItem('user');
-    window.location.replace("/");
+    history.push("/");
     return null;
-  }
 }
 
 export default Logout;

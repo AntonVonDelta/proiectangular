@@ -1,5 +1,7 @@
 import ReactDOM from 'react-dom';
-import { Profiler, useState,useEffect } from "react";
+import React from "react";
+import { Profiler, useState, useEffect } from "react";
+import { ConnectedRouter } from "connected-react-router";
 import { BrowserRouter, Route, Switch, Link, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from "react-redux";
@@ -33,69 +35,73 @@ import Footer from "./components/Footer"
 
 // unable to resolve dependency tree  -- se pare ca nimeni nu stie de ce apare eroarea asta si doar downgradeaza npm ca sa le mearga...
 // Altii pur si simplu apeleaza cu parametrul force fara sa le pese care e adevarata problema.
+// Dupa hackul asta urat: "It looks like you're trying to use TypeScript but do not have typescript installed" I ALREADY HAVE TYPESCRIPT!!! Where'd it go? fishing perhaps
+// Asta nu se cheama programare. Inca imi initializez proiectul ocolind problemele "populare" folosind hackuri care par mai robuste decat frameworkul in sine.
+// React: the new way of programming using language hacks only
+
+// Sa dea norocul peste tine si sa folosesti html corespunzator ca vei fi aspru pedepsit. E gresit daca folosesti href intr-un link! 
+// Trebuia sa stii ca numai ...."to" e permis!!!!   https://stackoverflow.com/questions/48856955/react-typeerror-location-is-undefined
+// Alta zi pierduta pe asta. Eroarea care aparea de fapt nu avea nicio legatura "locationProp is undefined"....noroc
 
 const store = configureStore(/* provide initial state if any */);
 
 const App = () => {
-    var user=loadUser();
-    console.log("logged in user:",user);
+    var user = loadUser();
+    console.log("logged in user:", user);
 
     return (
         <div>
-            <BrowserRouter>
-                <div>
-                    <CustomNavbar authentificated={user.authentificated} name={user.username}></CustomNavbar>
-                </div>
+            <div>
+                <CustomNavbar authentificated={user.authentificated} name={user.username}></CustomNavbar>
+            </div>
 
-                <div className="container">
-                    <Switch>
-                        <Route exact path="/" render={() => {
-                            return (
-                                    !user.authentificated ?
-                                        <Login/> :
-                                        <Home />
-                                );
-                            }}>
-                        </Route>
-                        
-                        <Route path="/logout">
-                            <Logout/>
-                        </Route>
+            <div className="container">
+                <Switch>
+                    <Route exact path="/" render={() => {
+                        return (
+                            !user.authentificated ?
+                                <Login /> :
+                                <Home />
+                        );
+                    }}>
+                    </Route>
 
-                        <Route path="/login" render={() => {
-                            return (
-                                !user.authentificated ?
-                                    <Login/> :
-                                    <Redirect to="/"></Redirect>
-                            );
-                        }}>
-                        </Route>
+                    <Route path="/logout">
+                        <Logout />
+                    </Route>
 
-                        <Route path="/register" render={() => {
-                            return (
-                                !user.authentificated ?
-                                    <Register /> :
-                                    <Redirect to="/"></Redirect>                                
-                            );
-                        }}>
-                        </Route>
+                    <Route path="/login" render={() => {
+                        return (
+                            !user.authentificated ?
+                                <Login /> :
+                                <Redirect to="/"></Redirect>
+                        );
+                    }}>
+                    </Route>
 
-                        <Route path="/profile" render={() => {
-                            return (
-                                !user.authentificated ?
-                                    <Redirect to="/"></Redirect> :
-                                    <Profile />
-                            );
-                        }}>
-                        </Route>
+                    <Route path="/register" render={() => {
+                        return (
+                            !user.authentificated ?
+                                <Register /> :
+                                <Redirect to="/"></Redirect>
+                        );
+                    }}>
+                    </Route>
 
-                    </Switch>
-                
-                </div>
+                    <Route path="/profile" render={() => {
+                        return (
+                            !user.authentificated ?
+                                <Redirect to="/"></Redirect> :
+                                <Profile />
+                        );
+                    }}>
+                    </Route>
 
-                <Footer/>
+                </Switch>
 
-            </BrowserRouter>
+            </div>
+
+            <Footer />
         </div>
     );
 };
@@ -103,9 +109,12 @@ const App = () => {
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
+            {/* <BrowserRouter>
+                <App />
+            </BrowserRouter>     */}
             <ConnectedRouter history={history}>
                 <App />
-            </ConnectedRouter>
+            </ConnectedRouter>  
         </Provider>
     </React.StrictMode>,
     document.getElementById("root")

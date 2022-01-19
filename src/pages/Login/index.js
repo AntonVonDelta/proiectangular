@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from 'react-router-dom';
 import doLogin from "./../../slices/userSlice";
-import reqLoginError from "./../../slices/userSlice";
-import reqLoggedIn from "./../../slices/userSlice";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -11,9 +9,11 @@ import { useHistory } from "react-router-dom";
 function Login() {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [loginError,setLoginError]=useState(false);
     const dispatch = useDispatch();
-    const serverErrorSelector = useSelector(reqLoginError);
-    const serverIsLoggedIn = useSelector(reqLoggedIn);
+
+    const userLoginError = useSelector((state) => state);
+    const userIsLoggedIn = useSelector((state) => state.isLoggedIn);
     let history = useHistory();
 
     async function checkUser(event) {
@@ -24,31 +24,38 @@ function Login() {
         dispatch(doLogin(user));
     }
 
+    console.log(userLoginError);
+
     useEffect(() => {
-        if (serverIsLoggedIn) {
+        if (userIsLoggedIn) {
             console.log("Redirect ...");
             history.push("/");
-        } else {
-            alert("User does not exist");
         }
-    }, [email, password, serverErrorSelector, serverIsLoggedIn]);
+        console.log("asdd",userLoginError);
+    }, [userLoginError, userIsLoggedIn]);
 
     return (
-        <form class="form-signin" onSubmit={this.checkUser}>
+        <form class="form-signin" onSubmit={checkUser}>
+            {userLoginError && (
+                <div className="alert alert-danger">
+                    Login failed: email or password is invalid
+                </div>
+            )}
+
             <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-            <label for="inputEmail" class="sr-only">Email</label>
+            <label htmlFor="inputEmail" class="sr-only">Email</label>
             <input
                 className="form-control"
                 type="text"
-                value={this.state.username}
+                value={email}
                 placeholder="enter a username"
                 onChange={({ target }) => setEmail(target.value)}
             />
-            <label for="inputPassword" class="sr-only">Password</label>
+            <label htmlFor="inputPassword" class="sr-only">Password</label>
             <input
                 className="form-control"
                 type="password"
-                value={this.state.password}
+                value={password}
                 placeholder="enter a password"
                 onChange={({ target }) => setPassword(target.value)}
             />

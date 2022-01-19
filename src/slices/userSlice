@@ -109,12 +109,4 @@ export const doLogin = (user) => async (dispatch) => {
 };
 
 
-
-
-
-//selectors
-export const reqRegisterData = (state) => state.user.registerData;
-export const reqLoginError = (state) => state.user.loginError;
-export const reqLoggedIn = (state) => state.user.isLoggedIn;
-
-// export default userSlice.reducer;
+export default userSlice.reducer;
