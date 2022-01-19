@@ -15,7 +15,7 @@ function Register() {
   const [password, setPassword] = useState();
   const serverIsLoggedIn = useSelector(reqLoggedIn);
   const dispatch = useDispatch();
-
+  let history = useHistory();
 
   async function register() {
     const user={

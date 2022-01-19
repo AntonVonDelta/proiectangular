@@ -2,6 +2,8 @@ import ReactDOM from 'react-dom';
 import { Profiler, useState,useEffect } from "react";
 import { BrowserRouter, Route, Switch, Link, Redirect } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Provider } from "react-redux";
+import configureStore, { history } from "./configureStore.js";
 
 // Components
 import "./index.css"
@@ -28,6 +30,11 @@ import Footer from "./components/Footer"
 // Mi-a luat peste 3 saptamani sa inteleg react si peste 257 de MB!! pentru un proiect amarat de comments si posts. Cine foloseste react?
 // Trebuie sa fi atent CUM importi un modul: daca ai folosit default, sau const, sau o functie... https://stackoverflow.com/questions/53328408/receiving-attempted-import-error-in-react-app  
 // Cine a inventat REACT!!!?
+
+// unable to resolve dependency tree  -- se pare ca nimeni nu stie de ce apare eroarea asta si doar downgradeaza npm ca sa le mearga...
+// Altii pur si simplu apeleaza cu parametrul force fara sa le pese care e adevarata problema.
+
+const store = configureStore(/* provide initial state if any */);
 
 const App = () => {
     var user=loadUser();
@@ -94,6 +101,12 @@ const App = () => {
 };
 
 ReactDOM.render(
-    <App />,
+    <React.StrictMode>
+        <Provider store={store}>
+            <ConnectedRouter history={history}>
+                <App />
+            </ConnectedRouter>
+        </Provider>
+    </React.StrictMode>,
     document.getElementById("root")
 );
