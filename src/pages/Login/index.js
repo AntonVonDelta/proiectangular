@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Link } from 'react-router-dom';
-import {doLogin} from "./../../slices/userSlice";
-
+import Axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory,useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+
+import {doLogin} from "./../../slices/userSlice";
 
 function Login() {
     const [email, setEmail] = useState("");

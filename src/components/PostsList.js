@@ -3,10 +3,10 @@ import Axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-export const Logout =()=> {
-    localStorage.removeItem('user');
-    window.location.href="/";
-    return null;
-}
+import { selectAllPosts } from "./../slices/postsSlice"
 
-export default Logout;
+
+export const PostsList = () => {
+  const posts = useSelector(selectAllPosts);
+  // omit component contents
+}

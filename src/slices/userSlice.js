@@ -16,6 +16,7 @@ export const userSlice = createSlice({
         registerData: {},
         loginError: false,
         isLoggedIn: false,
+        registerError:false
     },
     reducers: {
         setRegisterData: (state, action) => {
@@ -30,31 +31,34 @@ export const userSlice = createSlice({
         setLoggedIn: (state, action) => {
             state.isLoggedIn = action.payload;
         },
+        setRegisterError: (state, action) => {
+            state.registerError = action.payload;
+        },
     },
 });
 
 
 
 export const doRegister = (user) => async (dispatch) => {
-    dispatch(setLoginError(false));
+    dispatch(setRegisterError(false));
 
     try {
         const response = await Axios.post("https://gorest.co.in/public/v1/users", {
             email: user.email,
             name: user.username,
-            gender: "male",
+            gender: user.sex,
             status: "active",
             password: user.password
         }, AXIOS_TOKEN_CONFIG);
 
         console.log(response);
-        if (response.status != 200) {
-            dispatch(setLoginError(true));
+        if (response.status != 201) {
+            dispatch(setRegisterError(true));
             return;
         }
 
         if (response.data.data.id == null) {
-            dispatch(setLoginError(true));
+            dispatch(setRegisterError(true));
             return;
         }
 
@@ -69,7 +73,7 @@ export const doRegister = (user) => async (dispatch) => {
         dispatch(setRegisterData(new_user));
         dispatch(setLoggedIn(true));
     } catch (e) { 
-        dispatch(setLoginError(true));
+        dispatch(setRegisterError(true));
     }
 };
 
@@ -123,5 +127,6 @@ export const {
     clearRegisterData,
     setLoginError,
     setLoggedIn,
+    setRegisterError,
 } = userSlice.actions;
 export default userSlice.reducer;

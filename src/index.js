@@ -74,7 +74,17 @@ const App = () => {
                     <Route path="/logout">
                         <Logout />
                     </Route>
+                    
 
+                    <Route exact path="/home" render={() => {
+                        return (
+                            user==null ?
+                                <Redirect to="/login"></Redirect>:
+                                <Home/>
+                        );
+                    }}>
+                    </Route>
+                    
                     <Route path="/login" render={() => {
                         return (
                             user==null ?

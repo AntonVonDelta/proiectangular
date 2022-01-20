@@ -1,8 +1,9 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import Axios from "axios";
-import { Link } from 'react-router-dom';
-import { loadUser } from "../../actions/tools";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+
+import { loadUser } from "../../actions/tools";
 
 export const Profile = () => {
     var user = loadUser();

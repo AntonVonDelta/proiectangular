@@ -1,41 +1,44 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
-import { Link } from 'react-router-dom';
-
-import doRegister from "./../../slices/userSlice";
-import reqLoginError from "./../../slices/userSlice";
-import reqLoggedIn from "./../../slices/userSlice";
-
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
+import { doRegister } from "./../../slices/userSlice";
+
 function Register() {
-  const [username, setUsername] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const serverIsLoggedIn = useSelector(reqLoggedIn);
+  const [username, setUsername] = useState("");
+  const [sex, setSex] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const userIsLoggedIn = useSelector((state) => state.user.isLoggedIn);
+  const userRegisterError = useSelector((state)=>state.user.registerError);
   const dispatch = useDispatch();
 
   async function register() {
-    const user={
-      username:username,
-      email:email,
-      password:password
+    const user = {
+      username: username,
+      email: email,
+      sex:sex,
+      password: password
     }
-    dispatch(doRegister(this.state));
+    dispatch(doRegister(user));
   }
 
-  useEffect(()=>{
-    if(serverIsLoggedIn){
-      alert("Registered succesfully!");
-      window.location.href="/home";
-    }else{
-      alert("Registration failed!")
+  useEffect(() => {
+    if (userIsLoggedIn) {
+      window.location.href = "/home";
     }
-  },[serverIsLoggedIn]);
+  }, [userIsLoggedIn]);
 
   return (
     <div>
+      {userRegisterError && (
+                <div className="alert alert-danger">
+                    Register failed: email or password is invalid
+                </div>
+            )}
+
       <h1>Register</h1>
       <div className="border p-4">
         <div className="form-group">
@@ -56,6 +59,16 @@ function Register() {
             className="form-control"
             placeholder="Email .."
             onChange={event => setEmail(event.target.value)}
+          />
+        </div>
+        <div className="form-group">
+          <label>
+            Sex <small>{email}</small>
+          </label>
+          <input
+            className="form-control"
+            placeholder="Sex .."
+            onChange={event => setSex(event.target.value)}
           />
         </div>
         <div className="form-group">
