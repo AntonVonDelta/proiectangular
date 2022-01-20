@@ -25,7 +25,7 @@ class CustomNavbar extends Component{
             return ( 
             <Navbar bg="light" expand="lg">
                     <Container>
-                        <h5 class="my-0 mr-md-auto font-weight-normal">
+                        <h5 className="my-0 mr-md-auto font-weight-normal">
                             <Nav.Link href="/">PublicComments</Nav.Link>
                         </h5>
                         <Navbar.Toggle aria-controls="basic-navbar-nav" />

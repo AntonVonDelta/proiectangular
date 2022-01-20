@@ -13,7 +13,7 @@ const commentsSlice = createSlice({
     },
     reducers: {
         commentAdded: (state, action) => {
-            state.posts.push(action.payload);
+            state.comments.push(action.payload);
         },
     },
 
@@ -26,9 +26,9 @@ const commentsSlice = createSlice({
           .addCase(fetchCommentsByPostId.fulfilled, (state, action) => {
             state.status = 'succeeded'
             
-            // Get posts from answer
-            var fetchedPosts=action.payload.data;
-            state.comments = state.comments.concat(fetchedPosts)
+            // Get comments from answer
+            var fetchedComments=action.payload.data;
+            state.comments = state.comments.concat(fetchedComments)
           })
           .addCase(fetchCommentsByPostId.rejected, (state, action) => {
             state.status = 'failed'
@@ -42,10 +42,10 @@ export default commentsSlice.reducer
 
 
 
-export const selectAllCommentsOfPost = (state, post_id) => state.comments.comments.find(comment => comment.post_id === post_id)
-export const selectCommentById = (state, comment_id) => state.posts.posts.find(comment => comment.id === comment_id)
+export const selectAllCommentsOfPost = (state, post_id) => (state.comments.comments.filter(comment => comment.post_id === post_id) || [])
+export const selectCommentById = (state, comment_id) => state.comments.comments.find(comment => comment.id === comment_id)
 
-export const fetchCommentsByPostId = createAsyncThunk('posts/fetchPosts', async (post_id) => {
+export const fetchCommentsByPostId = createAsyncThunk('comments/fetchCommentsByPostId', async (post_id) => {
     const response = await getCommentsOfPostId(post_id);
     return response.data
 })

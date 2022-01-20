@@ -7,7 +7,12 @@ import { getPosts } from "../actions/tools";
 const postsSlice = createSlice({
     name: "posts",
     initialState: {
-        posts: [],
+        posts: [{
+            "id": 616,
+            "user_id": 612,
+            "title": "Asperiores crapula turpis curriculum aestus error adsuesco vobis.",
+            "body": "Voluptatem arma ut. Valetudo cibus vulticulus. Atrox credo velit. Curia colloco terra. Aggero urbs aut. Conatus defaeco cerno. Vomer vinculum patrocinor. Adhaero tempus tamisium. Territo dedico deleniti. Cura caste natus. Bibo damno cogito. Damnatio acerbitas utilis. Abscido desino vehemens. Taedium tabella assentator. Amiculum baiulus abscido. Quo aptus confugo. Usus qui civitas. Sponte tricesimus damnatio. Candidus cetera sordeo. Commemoro corrigo labore. Veritatis laudantium video. Iure itaque creptio. Agnosco aureus ubi. Pauper quibusdam stella. Cresco demo vado. Terra aliquam vix. Tactus bibo depereo. Tibi vergo demonstro."
+        }],
         status: "idle",
         error: null
     },
