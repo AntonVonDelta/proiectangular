@@ -15,12 +15,12 @@ const postsSlice = createSlice({
         postAdded: (state, action) => {
             state.posts.push(action.payload);
         },
-        postUpdated: (state) => {
-            const { id, title, content } = action.payload;
+        postUpdated: (state,action) => {
+            const { id, title, body } = action.payload;
             const foundPost = state.posts.find(post => post.id == id);
             if (foundPost) {
                 foundPost.title = title;
-                foundPost.content = content;
+                foundPost.body = body;
             }
         },
     },
@@ -35,7 +35,7 @@ const postsSlice = createSlice({
             state.status = 'succeeded'
             
             // Get posts from answer
-            fetchedPosts=action.payload.data;
+            var fetchedPosts=action.payload.data;
             state.posts = state.posts.concat(fetchedPosts)
           })
           .addCase(fetchPosts.rejected, (state, action) => {
@@ -51,7 +51,7 @@ export default postsSlice.reducer
 
 
 
-export const selectAllPosts = state => state.posts
+export const selectAllPosts = state => state.posts.posts
 export const selectPostById = (state, postId) => state.posts.find(post => post.id === postId)
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
