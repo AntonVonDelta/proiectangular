@@ -3,20 +3,18 @@ import Axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { PostsList } from "../../components/PostsList";
+import { CommentList } from "../../components/CommentsList";
 
-class Home extends Component {
+class Comments extends Component {
     render() {
-
-
         return (
             <div>
-                <h1>All posts</h1>
+                <h1>All comments</h1>
                 <hr></hr>
-                <PostsList />
+                <CommentList/>
             </div>
         );
     }
 }
 
-export default Home;
+export default Comments;

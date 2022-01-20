@@ -14,20 +14,6 @@ export const loadUser = () =>{
     return user;
 } 
 
-export const getComments =async (user)  => {
-    try{
-        const response = await Axios.get("https://gorest.co.in/public/v1/users?email="+user.email,AXIOS_TOKEN_CONFIG);
-
-        console.log(response);
-
-        return true;
-    }catch(ex){
-        console.log(ex);
-    }
-
-    return false;
-};
-
 export const getPosts=async ()=>{
     try{
         const response = await Axios.get("https://gorest.co.in/public/v1/posts",AXIOS_TOKEN_CONFIG);  
@@ -55,6 +41,18 @@ export const getAllUsers=async ()=>{
 export const getOneUser=async (user_id)=>{
     try{
         const response = await Axios.get("https://gorest.co.in/public/v1/users/"+user_id,AXIOS_TOKEN_CONFIG);  
+        console.log(response);
+
+        return response; 
+    }catch(ex){
+
+    }
+    return null;
+}
+
+export const getCommentsOfPostId=async (post_id)=>{
+    try{
+        const response = await Axios.get("https://gorest.co.in/public/v1/comments?post_id="+post_id,AXIOS_TOKEN_CONFIG);  
         console.log(response);
 
         return response; 

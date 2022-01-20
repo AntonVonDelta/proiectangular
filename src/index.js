@@ -23,6 +23,7 @@ import Register from "./pages/Register"
 import Logout from "./pages/Logout"
 import Profile from "./pages/Profile"
 import Footer from "./components/Footer"
+import Comments from './pages/Comments/Comments.js';
 
 // Deci poti crea componente clase si functii. Am folosit clase deoarece aveam vriabilele props si state deja populate in this 
 //    spre deosebire de functii unde trebuie sa apelezi useState de fiecare data. Nice
@@ -89,6 +90,15 @@ const App = () => {
                     }}>
                     </Route>
                     
+                    <Route exact path="/comments" render={() => {
+                        return (
+                            user==null ?
+                                <Redirect to="/login"></Redirect>:
+                                <Comments/>
+                        );
+                    }}>
+                    </Route>
+
                     <Route path="/login" render={() => {
                         return (
                             user==null ?
