@@ -14,6 +14,7 @@ import { doLogin, reqLoginError, reqLoggedIn } from "./slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {rootReducer} from "./reducers"
+import { fetchAllUsers } from './slices/usersSlice.js';
 
 import CustomNavbar from "./components/CustomNavbar"
 import Home from "./pages/Home"
@@ -54,13 +55,16 @@ const App = () => {
     var user =loadUser();
     console.log("logged in user:", user);
 
+    // Initial load of all current users
+    store.dispatch(fetchAllUsers); 
+
     return (
         <div>
             <div>
                 <CustomNavbar authentificated={user!=null} name={user!=null?user.username:""}></CustomNavbar>
             </div>
 
-            <div className="container">
+            <main className="container">
                 <Switch>
                     <Route exact path="/" render={() => {
                         return (
@@ -113,10 +117,9 @@ const App = () => {
                     </Route>
 
                 </Switch>
+            </main>
 
-            </div>
-
-            <Footer />
+            <Footer className="mt-4"/>
         </div>
     );
 };

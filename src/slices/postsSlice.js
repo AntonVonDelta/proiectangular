@@ -17,7 +17,7 @@ const postsSlice = createSlice({
         },
         postUpdated: (state,action) => {
             const { id, title, body } = action.payload;
-            const foundPost = state.posts.find(post => post.id == id);
+            const foundPost = state.posts.find(post => post.id === id);
             if (foundPost) {
                 foundPost.title = title;
                 foundPost.body = body;
@@ -46,13 +46,12 @@ const postsSlice = createSlice({
 });
 
 export const { postAdded, postUpdated } = postsSlice.actions
-
 export default postsSlice.reducer
 
 
 
 export const selectAllPosts = state => state.posts.posts
-export const selectPostById = (state, postId) => state.posts.find(post => post.id === postId)
+export const selectPostById = (state, postId) => state.posts.posts.find(post => post.id === postId)
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
     const response = await getPosts();

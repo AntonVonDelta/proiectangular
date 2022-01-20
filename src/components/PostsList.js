@@ -19,7 +19,7 @@ export const PostsList = () => {
         if (postStatus == 'idle') {
             dispatch(fetchPosts())
         }
-    }, [postStatus, dispatch])
+    }, [postStatus])
 
     return (
         <div>
@@ -31,8 +31,6 @@ export const PostsList = () => {
                     <SinglePostPage key={post.id} data={post}/>
                 )
             })}
-
-            Post page
         </div>
     );
 }

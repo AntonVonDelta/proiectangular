@@ -39,3 +39,15 @@ export const getPosts=async ()=>{
     }
     return null;
 }
+
+export const getAllUsers=async ()=>{
+    try{
+        const response = await Axios.get("https://gorest.co.in/public/v1/users",AXIOS_TOKEN_CONFIG);  
+        console.log(response);
+
+        return response; 
+    }catch(ex){
+
+    }
+    return null;
+}
