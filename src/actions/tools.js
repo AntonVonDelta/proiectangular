@@ -51,3 +51,15 @@ export const getAllUsers=async ()=>{
     }
     return null;
 }
+
+export const getOneUser=async (user_id)=>{
+    try{
+        const response = await Axios.get("https://gorest.co.in/public/v1/users/"+user_id,AXIOS_TOKEN_CONFIG);  
+        console.log(response);
+
+        return response; 
+    }catch(ex){
+
+    }
+    return null;
+}

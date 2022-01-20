@@ -56,7 +56,7 @@ const App = () => {
     console.log("logged in user:", user);
 
     // Initial load of all current users
-    store.dispatch(fetchAllUsers); 
+    store.dispatch(fetchAllUsers()); 
 
     return (
         <div>
