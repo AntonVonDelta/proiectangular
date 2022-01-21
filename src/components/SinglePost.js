@@ -3,7 +3,7 @@ import Axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
 
-import { selectPostById,doLikePost } from "../slices/postsSlice"
+import { selectPostById, doLikePost, doUnlikePost } from "../slices/postsSlice"
 import { fetchOneUser, selectUserById } from "../slices/usersSlice";
 
 import { Card, Button, Badge } from "react-bootstrap";
@@ -16,11 +16,11 @@ export const SinglePost = (props) => {
     const post = useSelector(state => selectPostById(state, id));
     const user = useSelector(state => selectUserById(state, post.user_id));
 
-    function likePost(){
-        dispatch(doLikePost(post))
+    function likePost() {
+        dispatch(doLikePost(post.id))
     }
-    function unlikePost(){
-
+    function unlikePost() {
+        dispatch(doUnlikePost(post.id))
     }
 
     useEffect(() => {
@@ -39,7 +39,7 @@ export const SinglePost = (props) => {
                             post: post
                         }
                     }}>
-                        <Card.Title>{post.title} <Badge bg="primary" style={{ marginLeft: "10px","padding":".25rem .5rem" }}>{post.likes}</Badge></Card.Title>
+                        <Card.Title>{post.title} <Badge bg="primary" style={{ marginLeft: "10px", "padding": ".25rem .5rem" }}>{post.likes}</Badge></Card.Title>
                     </Link>
 
                     {user != null &&
@@ -48,7 +48,7 @@ export const SinglePost = (props) => {
                     <Card.Text>{post.body}</Card.Text>
                 </Card.Body>
 
-                <div style={{ "width": "200px","margin":"0 10px 10px" }} className="btn-group">
+                <div style={{ "width": "200px", "margin": "0 10px 10px" }} className="btn-group">
                     <Button variant="outline-primary " className="w-50 btn-sm" onClick={likePost}>
                         Like
                     </Button>

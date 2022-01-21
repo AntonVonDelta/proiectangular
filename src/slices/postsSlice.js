@@ -24,6 +24,20 @@ const postsSlice = createSlice({
                 foundPost.likes = likes;
             }
         },
+        likePost: (state, action) => {
+            const id = action.payload;
+            const foundPost = state.posts.find(post => post.id === id);
+            if (foundPost) {
+                foundPost.likes = foundPost.likes + 1;
+            }
+        },
+        unlikePost: (state, action) => {
+            const id = action.payload;
+            const foundPost = state.posts.find(post => post.id === id);
+            if (foundPost) {
+                foundPost.likes = Math.max(0, foundPost.likes - 1);
+            }
+        },
         setPostError: (state, action) => {
             state.error = action.payload;
         },
@@ -70,20 +84,10 @@ const postsSlice = createSlice({
             .addCase(addNewPost.rejected, (state, action) => {
                 state.error = "Could not add new post";
             })
-            .addCase(doLikePost.fulfilled, (state, action) => {
-                const post = action.payload.data;
-                const foundPost = state.posts.find(post => post.id === id);
-
-                state.error = null;
-                foundPost.likes = foundPost.likes + 1;
-            })
-            .addCase(doLikePost.rejected, (state, action) => {
-                state.error = "Could not like post";
-            })
     }
 });
 
-export const { postAdded, postUpdated, setPostError, clearPostError } = postsSlice.actions
+export const { postAdded, postUpdated, likePost, unlikePost, setPostError, clearPostError } = postsSlice.actions
 export default postsSlice.reducer
 
 
@@ -103,19 +107,37 @@ export const addNewPost = createAsyncThunk(
     }
 )
 
-export const doLikePost = createAsyncThunk(
-    'posts/doLikePost',
-    async post => {
-        var new_likes=post.likes+1;
-        var new_post = {
-            id: post.id,
-            body: post.body + "š" + new_likes + "š",
-            title: post.title
-        }
-        console.log(new_post);
+export const doLikePost = (post_id) => (dispatch,getState) => {
+    dispatch(likePost(post_id))
+    var post= getState().posts.posts.find(post => post.id === post_id)
 
-        const response = await updatePost(new_post);
-
-        return response.data;
+    var new_post = {
+        id: post.id,
+        body: post.body + "š" + post.likes + "š",
+        title: post.title
     }
-)
+
+    updatePost(new_post).then(function(response){
+        // do nothing
+    }).catch(function(error){
+        dispatch(unlikePost(post_id))
+    });
+}
+export const doUnlikePost = (post_id) => (dispatch,getState) => {
+    dispatch(unlikePost(post_id))
+    var post= getState().posts.posts.find(post => post.id === post_id)
+
+    var new_post = {
+        id: post.id,
+        body: post.body + "š" + post.likes + "š",
+        title: post.title
+    }
+    
+    updatePost(new_post).then(function(response){
+        // do nothing
+    }).catch(function(error){
+        dispatch(unlikePost(post_id))
+    });
+}
+
+
