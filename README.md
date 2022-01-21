@@ -1,3 +1,8 @@
+# A complete Post&Comment platform written in React with redux
+This web application uses react to connect to a public api: https://gorest.co.in/ and manage users, posts and comments.
+An interesting feature of this platform is the ability to vote up or down a post, feature which is not provided by the underlying API but simulated using hidden information injected into posts.
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
