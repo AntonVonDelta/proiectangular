@@ -7,13 +7,13 @@ import { Card, InputGroup, FormControl, Button } from "react-bootstrap";
 
 import { addNewComment } from "../slices/commentsSlice";
 import { selectUserById } from "../slices/usersSlice";
-import { loadUser } from "../actions/tools";
+import { selectLoggedUser } from "../slices/userSlice";
 
 export const AddComment = (props) => {
     const dispatch = useDispatch();
 
     const post_id = props.post_id;
-    const user = loadUser();
+    const user = useSelector(selectLoggedUser);
 
     const [commentText, setCommentText] = useState("");
 

@@ -3,8 +3,13 @@ import Axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
+import { logoutStoredUser } from "../../slices/userSlice";
+
 export const Logout =()=> {
-    localStorage.removeItem('user');
+    const dispatch=useDispatch();
+
+    dispatch(logoutStoredUser());
+    
     window.location.href="/";
     return null;
 }

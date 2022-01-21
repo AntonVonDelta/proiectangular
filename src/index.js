@@ -9,8 +9,7 @@ import configureStore from "./configureStore.js";
 
 // Components
 import "./index.css"
-import { loadUser } from './actions/tools';
-import { loadStoredUser } from './slices/userSlice.js';
+import { loadStoredUser,selectLoggedUser } from './slices/userSlice.js';
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {rootReducer} from "./reducers"
@@ -53,15 +52,17 @@ import Comments from './pages/Comments/Comments.js';
 const store = configureStore(/* provide initial state if any */);
 
 const App = () => {
-    var user =loadUser();
+    var user =useSelector(selectLoggedUser)
     console.log("logged in user:", user);
 
     // Initial load of all current users
     store.dispatch(fetchAllUsers()); 
 
     // Load logged in user
-    store.dispatch(loadStoredUser());
-
+    if(user==null){
+        store.dispatch(loadStoredUser());
+    }
+    
     return (
         <div>
             <div>

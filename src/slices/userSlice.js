@@ -13,7 +13,7 @@ const getDBUserPassowrd = (user) => {
 export const userSlice = createSlice({
     name: "user",
     initialState: {
-        registerData: {},
+        registerData: null,
         loginError: false,
         isLoggedIn: false,
         registerError: false
@@ -23,7 +23,7 @@ export const userSlice = createSlice({
             state.registerData = action.payload;
         },
         clearRegisterData: (state) => {
-            state.registerData = {};
+            state.registerData = null;
         },
         setLoginError: (state, action) => {
             state.loginError = action.payload;
@@ -149,4 +149,9 @@ export const loadStoredUser = () => (dispatch) => {
     } catch (ex) {
 
     }
+}
+
+export const logoutStoredUser=()=>(dispatch)=>{
+    localStorage.removeItem('user');
+    dispatch(clearRegisterData())
 }

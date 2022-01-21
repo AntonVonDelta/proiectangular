@@ -8,7 +8,6 @@ import { Card, InputGroup, FormControl, Button } from "react-bootstrap";
 import { addNewPost } from "../slices/postsSlice";
 import { selectUserById } from "../slices/usersSlice";
 import { selectLoggedUser } from "../slices/userSlice";
-import { loadUser } from "../actions/tools";
 
 export const AddPost= (props) => {
     const dispatch = useDispatch();

@@ -3,10 +3,10 @@ import Axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { loadUser } from "../../actions/tools";
+import { selectLoggedUser } from "../../slices/userSlice";
 
 export const Profile = () => {
-    var user = loadUser();
+    var user = useSelector(selectLoggedUser);
 
     return (
         <div className="mt-5">
