@@ -35,15 +35,15 @@ function Login() {
     }, [userLoginError, userIsLoggedIn]);
     
     return (
-        <form class="form-signin" onSubmit={checkUser}>
+        <form className="form-signin" onSubmit={checkUser}>
             {userLoginError && (
                 <div className="alert alert-danger">
                     Login failed: email or password is invalid
                 </div>
             )}
 
-            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-            <label htmlFor="inputEmail" class="sr-only">Email</label>
+            <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <label htmlFor="inputEmail" className="sr-only">Email</label>
             <input
                 className="form-control"
                 type="text"
@@ -51,7 +51,7 @@ function Login() {
                 placeholder="enter a username"
                 onChange={({ target }) => setEmail(target.value)}
             />
-            <label htmlFor="inputPassword" class="sr-only">Password</label>
+            <label htmlFor="inputPassword" className="sr-only">Password</label>
             <input
                 className="form-control"
                 type="password"
@@ -59,7 +59,7 @@ function Login() {
                 placeholder="enter a password"
                 onChange={({ target }) => setPassword(target.value)}
             />
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            <button className="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         </form>
     );
 }

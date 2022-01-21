@@ -5,21 +5,22 @@ import { useHistory, Link } from "react-router-dom";
 
 import { Card, InputGroup, FormControl, Button } from "react-bootstrap";
 
-import { addNewComment } from "../slices/commentsSlice";
+import { addNewPost } from "../slices/postsSlice";
 import { selectUserById } from "../slices/usersSlice";
+import { selectLoggedUser } from "../slices/userSlice";
 import { loadUser } from "../actions/tools";
 
-export const AddComment = (props) => {
+export const AddPost= (props) => {
     const dispatch = useDispatch();
 
-    const post_id = props.post_id;
-    const user = loadUser();
-
-    const [commentText, setCommentText] = useState("");
+    const user = useSelector(selectLoggedUser())
+    console.log("Addpost:",user);
+    const [postTile, setPostTitle] = useState("");
+    const [postBody, setPostBody] = useState("");
 
     const onClick = async () => {
         setCommentText("");
-        await dispatch(addNewComment({ post_id: post_id, name: user.username, email: user.email, body: commentText }));
+        await dispatch(addNewPost({ post_id: post_id, name: user.username, email: user.email, body: commentText }));
     }
     const handleKeypress = e => {
         if (e.charCode === 13) {

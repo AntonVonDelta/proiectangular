@@ -10,7 +10,7 @@ import configureStore from "./configureStore.js";
 // Components
 import "./index.css"
 import { loadUser } from './actions/tools';
-import { doLogin, reqLoginError, reqLoggedIn } from "./slices/userSlice";
+import { loadStoredUser } from "./slices/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {rootReducer} from "./reducers"
@@ -58,6 +58,9 @@ const App = () => {
 
     // Initial load of all current users
     store.dispatch(fetchAllUsers()); 
+
+    // Load logged in user
+    // store.dispatch(loadStoredUser());
 
     return (
         <div>

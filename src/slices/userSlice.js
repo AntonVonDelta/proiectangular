@@ -16,7 +16,7 @@ export const userSlice = createSlice({
         registerData: {},
         loginError: false,
         isLoggedIn: false,
-        registerError:false
+        registerError: false
     },
     reducers: {
         setRegisterData: (state, action) => {
@@ -37,6 +37,18 @@ export const userSlice = createSlice({
     },
 });
 
+
+export const {
+    setRegisterData,
+    clearRegisterData,
+    setLoginError,
+    setLoggedIn,
+    setRegisterError,
+} = userSlice.actions;
+export default userSlice.reducer;
+
+
+export const selectLoggedUser = state => state.user.registerData;
 
 
 export const doRegister = (user) => async (dispatch) => {
@@ -63,6 +75,7 @@ export const doRegister = (user) => async (dispatch) => {
         }
 
         var new_user = {
+            id: user.id,
             email: user.email,
             username: user.username,
             sex: user.sex,
@@ -72,7 +85,7 @@ export const doRegister = (user) => async (dispatch) => {
         localStorage.setItem('user', JSON.stringify(new_user));
         dispatch(setRegisterData(new_user));
         dispatch(setLoggedIn(true));
-    } catch (e) { 
+    } catch (e) {
         dispatch(setRegisterError(true));
     }
 };
@@ -108,12 +121,13 @@ export const doLogin = (user) => async (dispatch) => {
         }
 
         var new_user = {
+            id: found_user.id,
             email: found_user.email,
             username: found_user.name,
             sex: found_user.gender,
             strong_password: (user.password.length > 8)
         }
-        console.log("doLogin:",new_user);
+        console.log("doLogin:", new_user);
         localStorage.setItem('user', JSON.stringify(new_user));
         dispatch(setLoggedIn(true));
     } catch (e) {
@@ -121,12 +135,8 @@ export const doLogin = (user) => async (dispatch) => {
     }
 };
 
-//actions
-export const {
-    setRegisterData,
-    clearRegisterData,
-    setLoginError,
-    setLoggedIn,
-    setRegisterError,
-} = userSlice.actions;
-export default userSlice.reducer;
+export const loadStoredUser =(dispatch) => {
+    var user = null;
+
+    
+}

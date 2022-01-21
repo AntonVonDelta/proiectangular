@@ -27,8 +27,8 @@ export const PostsList = () => {
 
             {posts.map((post, i) => {
                 return (
-                    <div className="mt-3">
-                        <SinglePost key={post.id} data={post} />
+                    <div key={post.id} className="mt-3">
+                        <SinglePost data={post} />
                     </div>
                 )
             })}

@@ -24,12 +24,12 @@ export const CommentList = (props) => {
     }, [commentStatus])
 
     return <div>
-        <AddComment/>
-        
+        <AddComment post_id={post.id}/>
+
         {comments.map((comment, i) => {
             return (
-                <div className="mt-4">
-                    <SingleComment key={comment.id} data={comment} />
+                <div key={comment.id} className="mt-4">
+                    <SingleComment data={comment} />
                 </div>
             )
         })}

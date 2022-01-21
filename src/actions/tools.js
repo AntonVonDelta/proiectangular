@@ -61,3 +61,27 @@ export const getCommentsOfPostId=async (post_id)=>{
     }
     return null;
 }
+
+export const postNewComment=async (comment)=>{
+    try{
+        const response = await Axios.post("https://gorest.co.in/public/v1/comments",comment,AXIOS_TOKEN_CONFIG);  
+        console.log(response);
+
+        return response; 
+    }catch(ex){
+
+    }
+    return null;
+}
+
+export const postNewPost=async (comment)=>{
+    try{
+        const response = await Axios.post("https://gorest.co.in/public/v1/posts",comment,AXIOS_TOKEN_CONFIG);  
+        console.log(response);
+
+        return response; 
+    }catch(ex){
+
+    }
+    return null;
+}

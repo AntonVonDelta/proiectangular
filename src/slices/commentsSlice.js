@@ -2,7 +2,7 @@ import Axios from "axios";
 import { AXIOS_TOKEN_CONFIG } from "../secret";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { getCommentsOfPostId } from "../actions/tools";
+import { getCommentsOfPostId,postNewComment } from "../actions/tools";
 
 const commentsSlice = createSlice({
     name: "comments",
@@ -20,21 +20,24 @@ const commentsSlice = createSlice({
     // Used by async methods
     extraReducers(builder) {
         builder
-          .addCase(fetchCommentsByPostId.pending, (state, action) => {
-            state.status = 'loading'
-          })
-          .addCase(fetchCommentsByPostId.fulfilled, (state, action) => {
-            state.status = 'succeeded'
-            
-            // Get comments from answer
-            var fetchedComments=action.payload.data;
-            state.comments = state.comments.concat(fetchedComments)
-          })
-          .addCase(fetchCommentsByPostId.rejected, (state, action) => {
-            state.status = 'failed'
-            state.error = action.error.message
-          })
-      }
+            .addCase(fetchCommentsByPostId.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(fetchCommentsByPostId.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+
+                // Get comments from answer
+                var fetchedComments = action.payload.data;
+                state.comments = state.comments.concat(fetchedComments)
+            })
+            .addCase(fetchCommentsByPostId.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+            .addCase(addNewComment.fulfilled, (state, action) => {
+                state.comments.push(action.payload.data);
+            })
+    }
 });
 
 export const { commentAdded } = commentsSlice.actions
@@ -49,3 +52,11 @@ export const fetchCommentsByPostId = createAsyncThunk('comments/fetchCommentsByP
     const response = await getCommentsOfPostId(post_id);
     return response.data
 })
+
+export const addNewComment = createAsyncThunk(
+    'comments/addNewComment',
+    async newComment => {
+        const response = await postNewComment(newComment);
+        return response.data
+    }
+)
