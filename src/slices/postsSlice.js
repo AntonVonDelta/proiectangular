@@ -71,9 +71,9 @@ const postsSlice = createSlice({
                 state.error = "Could not add new post";
             })
             .addCase(doLikePost.fulfilled, (state, action) => {
-                const id = action.payload.data.id;
+                const post = action.payload.data;
                 const foundPost = state.posts.find(post => post.id === id);
-                
+
                 state.error = null;
                 foundPost.likes = foundPost.likes + 1;
             })
@@ -106,9 +106,10 @@ export const addNewPost = createAsyncThunk(
 export const doLikePost = createAsyncThunk(
     'posts/doLikePost',
     async post => {
+        var new_likes=post.likes+1;
         var new_post = {
             id: post.id,
-            body: post.body + "š" + post.likes + "š",
+            body: post.body + "š" + new_likes + "š",
             title: post.title
         }
         console.log(new_post);
