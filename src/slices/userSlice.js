@@ -135,8 +135,18 @@ export const doLogin = (user) => async (dispatch) => {
     }
 };
 
-export const loadStoredUser =(dispatch) => {
-    var user = null;
+export const loadStoredUser = () => (dispatch) => {
+    try {
+        var user = null;
 
-    
+        const loggedInUser = localStorage.getItem("user");
+        console.log("loadStoredUser:", loggedInUser);
+
+        if (loggedInUser) {
+            user = JSON.parse(loggedInUser);
+            dispatch(setRegisterData(user));
+        }
+    } catch (ex) {
+
+    }
 }

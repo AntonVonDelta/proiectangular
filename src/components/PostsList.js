@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { selectAllPosts, fetchPosts } from "./../slices/postsSlice"
 
 import { SinglePost } from "./SinglePost";
+import { AddPost } from "./AddPost";
 
 export const PostsList = () => {
     const dispatch = useDispatch();
@@ -13,7 +14,7 @@ export const PostsList = () => {
     const posts = useSelector(selectAllPosts);
     const postStatus = useSelector(state => state.posts.status);
     const error = useSelector(state => state.posts.error)
-
+    
     useEffect(() => {
         if (postStatus == 'idle') {
             dispatch(fetchPosts())
@@ -22,8 +23,13 @@ export const PostsList = () => {
 
     return (
         <div>
-            {error &&
-                <h1>Error</h1>}
+            <AddPost/>
+
+            {error && (
+                <div className="alert alert-danger">
+                    {error}
+                </div>
+            )}
 
             {posts.map((post, i) => {
                 return (

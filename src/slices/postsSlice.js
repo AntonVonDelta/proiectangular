@@ -15,7 +15,7 @@ const postsSlice = createSlice({
         postAdded: (state, action) => {
             state.posts.push(action.payload);
         },
-        postUpdated: (state,action) => {
+        postUpdated: (state, action) => {
             const { id, title, body } = action.payload;
             const foundPost = state.posts.find(post => post.id === id);
             if (foundPost) {
@@ -28,24 +28,29 @@ const postsSlice = createSlice({
     // Used by async methods
     extraReducers(builder) {
         builder
-          .addCase(fetchPosts.pending, (state, action) => {
-            state.status = 'loading'
-          })
-          .addCase(fetchPosts.fulfilled, (state, action) => {
-            state.status = 'succeeded'
-            
-            // Get posts from answer
-            var fetchedPosts=action.payload.data;
-            state.posts = state.posts.concat(fetchedPosts)
-          })
-          .addCase(fetchPosts.rejected, (state, action) => {
-            state.status = 'failed'
-            state.error = action.error.message
-          })
-          .addCase(addNewPost.fulfilled, (state, action) => {
-            state.posts.push(action.payload.data);
-        })
-      }
+            .addCase(fetchPosts.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(fetchPosts.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.error = null;
+
+                // Get posts from answer
+                var fetchedPosts = action.payload.data;
+                state.posts = state.posts.concat(fetchedPosts)
+            })
+            .addCase(fetchPosts.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+            .addCase(addNewPost.fulfilled, (state, action) => {
+                state.posts.push(action.payload.data);
+                state.error = null;
+            })
+            .addCase(addNewPost.rejected, (state, action) => {
+                state.error = "Could not add new post";
+            })
+    }
 });
 
 export const { postAdded, postUpdated } = postsSlice.actions

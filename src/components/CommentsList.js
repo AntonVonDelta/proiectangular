@@ -24,7 +24,13 @@ export const CommentList = (props) => {
     }, [commentStatus])
 
     return <div>
-        <AddComment post_id={post.id}/>
+        <AddComment post_id={post.id} />
+
+        {error && (
+            <div className="alert alert-danger">
+                {error}
+            </div>
+        )}
 
         {comments.map((comment, i) => {
             return (

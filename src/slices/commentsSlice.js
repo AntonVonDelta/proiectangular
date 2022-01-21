@@ -25,6 +25,7 @@ const commentsSlice = createSlice({
             })
             .addCase(fetchCommentsByPostId.fulfilled, (state, action) => {
                 state.status = 'succeeded'
+                state.error=null;
 
                 // Get comments from answer
                 var fetchedComments = action.payload.data;
@@ -36,6 +37,10 @@ const commentsSlice = createSlice({
             })
             .addCase(addNewComment.fulfilled, (state, action) => {
                 state.comments.push(action.payload.data);
+                state.error=null;
+            })
+            .addCase(addNewComment.rejected, (state, action) => {
+                state.error="Could not add comment";
             })
     }
 });

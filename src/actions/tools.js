@@ -5,7 +5,6 @@ export const loadUser = () =>{
     var user =null;
 
     const loggedInUser = localStorage.getItem("user");
-    console.log("Stored user data:",loggedInUser);
 
     if (loggedInUser) {
         user = JSON.parse(loggedInUser);

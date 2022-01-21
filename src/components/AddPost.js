@@ -13,14 +13,14 @@ import { loadUser } from "../actions/tools";
 export const AddPost= (props) => {
     const dispatch = useDispatch();
 
-    const user = useSelector(selectLoggedUser())
-    console.log("Addpost:",user);
-    const [postTile, setPostTitle] = useState("");
+    const user = useSelector(selectLoggedUser)
+    const [postTitle, setPostTitle] = useState("");
     const [postBody, setPostBody] = useState("");
 
     const onClick = async () => {
-        setCommentText("");
-        await dispatch(addNewPost({ post_id: post_id, name: user.username, email: user.email, body: commentText }));
+        setPostTitle("");
+        setPostBody("");
+        await dispatch(addNewPost({ user_id: user.id, title:postTitle,body:postBody }));
     }
     const handleKeypress = e => {
         if (e.charCode === 13) {
@@ -32,14 +32,21 @@ export const AddPost= (props) => {
         <div>
             <InputGroup className="mb-3">
                 <FormControl
-                    placeholder="Write a new comment"
+                    placeholder="Write a new post title"
                     aria-describedby="basic-addon2"
-                    value={commentText}
-                    onChange={event => setCommentText(event.target.value)}
+                    value={postTitle}
+                    onChange={event => setPostTitle(event.target.value)}
+                    onKeyPress={handleKeypress}
+                />
+                 <FormControl
+                    placeholder="Write a new post description"
+                    aria-describedby="basic-addon2"
+                    value={postBody}
+                    onChange={event => setPostBody(event.target.value)}
                     onKeyPress={handleKeypress}
                 />
                 <Button variant="primary" id="button-addon2" onClick={onClick}>
-                    Send comment
+                    Create post
                 </Button>
             </InputGroup>
         </div>
