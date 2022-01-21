@@ -63,7 +63,7 @@ function Register() {
         </div>
         <div className="form-group">
           <label>
-            Sex <small>{email}</small>
+            Sex <small>{sex}</small>
           </label>
           <input
             className="form-control"

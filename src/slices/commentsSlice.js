@@ -2,7 +2,7 @@ import Axios from "axios";
 import { AXIOS_TOKEN_CONFIG } from "../secret";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { getCommentsOfPostId,postNewComment } from "../actions/tools";
+import { getCommentsOfPostId, postNewComment, axiosDeleteComment } from "../actions/tools";
 
 const commentsSlice = createSlice({
     name: "comments",
@@ -15,6 +15,9 @@ const commentsSlice = createSlice({
         commentAdded: (state, action) => {
             state.comments.push(action.payload);
         },
+        commentDelete: (state, action) => {
+            state.comments = state.comments.filter(entry => entry.id !== action.payload.id);
+        },
     },
 
     // Used by async methods
@@ -25,7 +28,7 @@ const commentsSlice = createSlice({
             })
             .addCase(fetchCommentsByPostId.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                state.error=null;
+                state.error = null;
 
                 // Get comments from answer
                 var fetchedComments = action.payload.data;
@@ -37,15 +40,15 @@ const commentsSlice = createSlice({
             })
             .addCase(addNewComment.fulfilled, (state, action) => {
                 state.comments.push(action.payload.data);
-                state.error=null;
+                state.error = null;
             })
             .addCase(addNewComment.rejected, (state, action) => {
-                state.error="Could not add comment";
+                state.error = "Could not add comment";
             })
     }
 });
 
-export const { commentAdded } = commentsSlice.actions
+export const { commentAdded, commentDelete } = commentsSlice.actions
 export default commentsSlice.reducer
 
 
@@ -65,3 +68,10 @@ export const addNewComment = createAsyncThunk(
         return response.data
     }
 )
+
+
+export const deleteComment = (comment) => (dispatch) => {
+    axiosDeleteComment(comment).then(function () {
+        dispatch(commentDelete(comment))
+    })
+}

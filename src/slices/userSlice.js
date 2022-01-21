@@ -75,7 +75,7 @@ export const doRegister = (user) => async (dispatch) => {
         }
 
         var new_user = {
-            id: user.id,
+            id: response.data.data.id,
             email: user.email,
             username: user.username,
             sex: user.sex,

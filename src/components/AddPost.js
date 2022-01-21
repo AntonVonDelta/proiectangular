@@ -19,6 +19,7 @@ export const AddPost= (props) => {
     const onClick = async () => {
         setPostTitle("");
         setPostBody("");
+        console.log({ user_id: user.id, title:postTitle,body:postBody })
         await dispatch(addNewPost({ user_id: user.id, title:postTitle,body:postBody }));
     }
     const handleKeypress = e => {
