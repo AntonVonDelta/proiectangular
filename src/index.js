@@ -48,6 +48,7 @@ import Comments from './pages/Comments/Comments.js';
 // useHistory pur si simplu nu merge. Uneori rezulta in loop infinit alteori nu face absolut niciun redirect daca parametrul e "/". 
 // Asa cum am mai zis hackul aici care este "window.location.href" merge mai bine decat implementarea default
 
+// marginLeft in loc de margin-left? .....serios?
 
 const store = configureStore(/* provide initial state if any */);
 
@@ -62,7 +63,7 @@ const App = () => {
     if(user==null){
         store.dispatch(loadStoredUser());
     }
-    
+
     return (
         <div>
             <div>

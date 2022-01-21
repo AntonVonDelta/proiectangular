@@ -15,7 +15,7 @@ function Login() {
     const userIsLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
 
-    async function checkUser(event) {
+    function checkUser(event) {
         event.preventDefault();
 
         const user = {

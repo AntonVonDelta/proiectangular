@@ -2,7 +2,7 @@ import Axios from "axios";
 import { AXIOS_TOKEN_CONFIG } from "../secret";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-import { getPosts, postNewPost } from "../actions/tools";
+import { getPosts, postNewPost, updatePost } from "../actions/tools";
 
 const postsSlice = createSlice({
     name: "posts",
@@ -16,12 +16,19 @@ const postsSlice = createSlice({
             state.posts.push(action.payload);
         },
         postUpdated: (state, action) => {
-            const { id, title, body } = action.payload;
+            const { id, title, body, likes } = action.payload;
             const foundPost = state.posts.find(post => post.id === id);
             if (foundPost) {
                 foundPost.title = title;
                 foundPost.body = body;
+                foundPost.likes = likes;
             }
+        },
+        setPostError: (state, action) => {
+            state.error = action.payload;
+        },
+        clearPostError: (state, action) => {
+            state.error = null;
         },
     },
 
@@ -37,6 +44,18 @@ const postsSlice = createSlice({
 
                 // Get posts from answer
                 var fetchedPosts = action.payload.data;
+                const matchExprFirst = /š(\d+)š/;
+                const matchExprAll = /š(\d+)š/g;
+                for (var entry of fetchedPosts) {
+                    var match = entry.body.match(matchExprFirst);
+                    var likes = 0;
+                    if (match != null) {
+                        likes = parseInt(match[1]);
+                    }
+                    entry["likes"] = likes;
+                    entry.body = entry.body.replace(matchExprAll, "");
+                }
+
                 state.posts = state.posts.concat(fetchedPosts)
             })
             .addCase(fetchPosts.rejected, (state, action) => {
@@ -44,16 +63,27 @@ const postsSlice = createSlice({
                 state.error = action.error.message
             })
             .addCase(addNewPost.fulfilled, (state, action) => {
+                action.payload.data["likes"] = 0;
                 state.posts.push(action.payload.data);
                 state.error = null;
             })
             .addCase(addNewPost.rejected, (state, action) => {
                 state.error = "Could not add new post";
             })
+            .addCase(doLikePost.fulfilled, (state, action) => {
+                const id = action.payload.data.id;
+                const foundPost = state.posts.find(post => post.id === id);
+                
+                state.error = null;
+                foundPost.likes = foundPost.likes + 1;
+            })
+            .addCase(doLikePost.rejected, (state, action) => {
+                state.error = "Could not like post";
+            })
     }
 });
 
-export const { postAdded, postUpdated } = postsSlice.actions
+export const { postAdded, postUpdated, setPostError, clearPostError } = postsSlice.actions
 export default postsSlice.reducer
 
 
@@ -70,5 +100,21 @@ export const addNewPost = createAsyncThunk(
     async newPost => {
         const response = await postNewPost(newPost);
         return response.data
+    }
+)
+
+export const doLikePost = createAsyncThunk(
+    'posts/doLikePost',
+    async post => {
+        var new_post = {
+            id: post.id,
+            body: post.body + "š" + post.likes + "š",
+            title: post.title
+        }
+        console.log(new_post);
+
+        const response = await updatePost(new_post);
+
+        return response.data;
     }
 )

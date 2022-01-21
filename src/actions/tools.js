@@ -62,9 +62,21 @@ export const postNewComment=async (comment)=>{
     return null;
 }
 
-export const postNewPost=async (comment)=>{
+export const postNewPost=async (post)=>{
     try{
-        const response = await Axios.post("https://gorest.co.in/public/v1/posts",comment,AXIOS_TOKEN_CONFIG);  
+        const response = await Axios.post("https://gorest.co.in/public/v1/posts",post,AXIOS_TOKEN_CONFIG);  
+        console.log(response);
+
+        return response; 
+    }catch(ex){
+
+    }
+    return null;
+}
+
+export const updatePost=async (post)=>{
+    try{
+        const response = await Axios.patch("https://gorest.co.in/public/v1/posts/"+post.id,post,AXIOS_TOKEN_CONFIG);  
         console.log(response);
 
         return response; 
